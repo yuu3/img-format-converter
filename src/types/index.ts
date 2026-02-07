@@ -1,3 +1,10 @@
+export type CropArea = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export type ImageFile = {
   id: string;
   file: File;
@@ -7,6 +14,7 @@ export type ImageFile = {
   convertedBlob?: Blob;
   status: 'idle' | 'processing' | 'completed' | 'error';
   error?: string;
+  cropArea?: CropArea;
 }
 
 export type ConversionOptions = {

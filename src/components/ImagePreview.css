@@ -135,6 +135,7 @@
   margin-top: 1rem;
 }
 
+.crop-btn,
 .download-btn,
 .remove-btn {
   flex: 1;
@@ -145,6 +146,15 @@
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 0.9rem;
+}
+
+.crop-btn {
+  background-color: #4299e1;
+  color: white;
+}
+
+.crop-btn:hover {
+  background-color: #3182ce;
 }
 
 .download-btn {

@@ -2,8 +2,10 @@ import { useState, useCallback } from 'react';
 import { ImageUploader } from './components/ImageUploader';
 import { ImagePreview } from './components/ImagePreview';
 import { ConversionControls } from './components/ConversionControls';
-import type { ImageFile, ConversionOptions } from './types';
+import { ImageCropper } from './components/ImageCropper';
+import type { ImageFile, ConversionOptions, CropArea } from './types';
 import { convertImage } from './utils/imageConverter';
+import { cropImage } from './utils/imageCropper';
 import { downloadSingleImage, downloadAllImages } from './utils/downloadHelper';
 import './App.css';
 
@@ -11,6 +13,7 @@ function App() {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentFormat, setCurrentFormat] = useState<'jpeg' | 'png' | 'webp' | 'avif'>('webp');
+  const [croppingImageId, setCroppingImageId] = useState<string | null>(null);
 
   const handleFilesSelected = useCallback((files: File[]) => {
     const newImages: ImageFile[] = files.map((file) => ({
@@ -90,7 +93,46 @@ function App() {
     downloadAllImages(images, currentFormat);
   }, [images, currentFormat]);
 
+  const handleCrop = useCallback((id: string) => {
+    setCroppingImageId(id);
+  }, []);
+
+  const handleCropApply = useCallback(async (cropArea: CropArea) => {
+    if (!croppingImageId) return;
+
+    const image = images.find((img) => img.id === croppingImageId);
+    if (!image) return;
+
+    try {
+      const croppedFile = await cropImage(image.file, cropArea);
+
+      setImages((prev) =>
+        prev.map((img) =>
+          img.id === croppingImageId
+            ? {
+                ...img,
+                file: croppedFile,
+                preview: URL.createObjectURL(croppedFile),
+                originalSize: croppedFile.size,
+                cropArea,
+              }
+            : img
+        )
+      );
+
+      setCroppingImageId(null);
+    } catch (error) {
+      console.error('Failed to crop image:', error);
+      alert('画像のトリミングに失敗しました');
+    }
+  }, [croppingImageId, images]);
+
+  const handleCropCancel = useCallback(() => {
+    setCroppingImageId(null);
+  }, []);
+
   const completedCount = images.filter((img) => img.status === 'completed').length;
+  const croppingImage = images.find((img) => img.id === croppingImageId);
 
   return (
     <div className="app">
@@ -114,6 +156,7 @@ function App() {
               images={images}
               onRemove={handleRemove}
               onDownload={handleDownload}
+              onCrop={handleCrop}
             />
 
             {completedCount > 0 && (
@@ -134,6 +177,14 @@ function App() {
       <footer className="app-footer">
         <p>すべての処理はブラウザ上で行われます。画像がサーバーにアップロードされることはありません。</p>
       </footer>
+
+      {croppingImage && (
+        <ImageCropper
+          imageUrl={croppingImage.preview}
+          onCrop={handleCropApply}
+          onCancel={handleCropCancel}
+        />
+      )}
     </div>
   );
 }

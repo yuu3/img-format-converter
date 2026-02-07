@@ -5,9 +5,10 @@ interface ImagePreviewProps {
   images: ImageFile[];
   onRemove: (id: string) => void;
   onDownload: (id: string) => void;
+  onCrop?: (id: string) => void;
 }
 
-export const ImagePreview = ({ images, onRemove, onDownload }: ImagePreviewProps) => {
+export const ImagePreview = ({ images, onRemove, onDownload, onCrop }: ImagePreviewProps) => {
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -73,6 +74,14 @@ export const ImagePreview = ({ images, onRemove, onDownload }: ImagePreviewProps
                 <p className="error-message">{img.error}</p>
               )}
               <div className="button-group">
+                {onCrop && img.status === 'idle' && (
+                  <button
+                    className="crop-btn"
+                    onClick={() => onCrop(img.id)}
+                  >
+                    トリミング
+                  </button>
+                )}
                 {img.status === 'completed' && img.convertedBlob && (
                   <button
                     className="download-btn"
