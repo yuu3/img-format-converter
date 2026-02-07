@@ -1,0 +1,171 @@
+.image-preview-container {
+  margin-top: 2rem;
+}
+
+.image-preview-container h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.image-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.image-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background-color: #f7fafc;
+  overflow: hidden;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.processing-overlay,
+.error-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4299e1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-overlay span {
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.image-info {
+  padding: 1rem;
+}
+
+.image-name {
+  font-weight: 500;
+  color: #2d3748;
+  margin: 0 0 0.75rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.size-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.size-info > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  color: #718096;
+  font-weight: 500;
+}
+
+.value {
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.compression-rate .value.positive {
+  color: #48bb78;
+}
+
+.compression-rate .value.negative {
+  color: #f56565;
+}
+
+.error-message {
+  color: #f56565;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background-color: #fff5f5;
+  border-radius: 4px;
+}
+
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.download-btn,
+.remove-btn {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.download-btn {
+  background-color: #48bb78;
+  color: white;
+}
+
+.download-btn:hover {
+  background-color: #38a169;
+}
+
+.remove-btn {
+  background-color: #e2e8f0;
+  color: #2d3748;
+}
+
+.remove-btn:hover:not(:disabled) {
+  background-color: #cbd5e0;
+}
+
+.remove-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
