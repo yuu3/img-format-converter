@@ -40,7 +40,7 @@ export const downloadAllImages = async (images: ImageFile[], format: string) => 
   // Create ZIP file for multiple images
   const zip = new JSZip();
 
-  completedImages.forEach((img, index) => {
+  completedImages.forEach((img) => {
     if (img.convertedBlob) {
       const originalName = img.file.name;
       const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
